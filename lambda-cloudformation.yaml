@@ -1,66 +1,70 @@
-﻿# Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
-
-AWSTemplateFormatVersion: '2010-09-09'
-Description: service-catalog-sync-lambda
+﻿AWSTemplateFormatVersion: '2010-09-09'
+Description: custom organization-config-rules
 Resources:
-  LAMBDA:
+  rVPCFlowLogS3EnforcementLambda2:
     Type: AWS::Lambda::Function
+    DependsOn:
+      - rVPCFlowLogS3EnforcementLambdaRole2
     Properties:
-      FunctionName: service-catalog-sync-lambda
-      Handler: sync-catalog.handler
+      FunctionName: VPCFlowLogS3EnforcementLambda2
+      Handler: VPCFlowLogS3EnforcementLambda.lambda_handler
       Runtime: python2.7
-      Description: Function to sync service catalog with a configuration file
-      Code: ./
+      Description: Ensure that VPC FlowLogs to centralized S3 bucket.
+      Code: ./rules/VPC_FLOW_LOGS_TO_S3_CUSTOM/VPCFlowLogS3EnforcementLambda.py
       MemorySize: 128
-      Timeout: 300
-      Role: !GetAtt LAMBDAROLE.Arn
-  LAMBDAROLE:
-      Type: AWS::IAM::Role
-      Properties:
-        RoleName: !Sub service-catalog-sync-lambda-role-${AWS::Region}
-        AssumeRolePolicyDocument:
-          Version: 2012-10-17
-          Statement:
-            -
-              Effect: Allow
-              Principal:
-                Service:
-                  - lambda.amazonaws.com
-              Action:
-                - sts:AssumeRole
-        Path: /
-  LAMBDAPOLICY:
-    Type: AWS::IAM::Policy
+      Timeout: 180
+      Role: !GetAtt rVPCFlowLogS3EnforcementLambdaRole2.Arn
+  rVPCFlowLogS3EnforcementLambdaRole2:
+    Type: 'AWS::IAM::Role'
     Properties:
-      PolicyName: !Sub service-catalog-sync-lambda-policy-${AWS::Region}
-      PolicyDocument:
-        Version: 2012-10-17
+      RoleName: VPCFlowLogS3EnforcementLambdaRole2
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
         Statement:
-          -
-            Effect: Allow
-            Action:
-              - servicecatalog:*
-              - s3:*
-              - codepipeline:PutJobFailureResult
-              - codepipeline:PutJobSuccessResult
-              - cloudformation:ValidateTemplate
-              - iam:GetRole
-            Resource:
-              - "*"
-          -
-            Effect: Allow
-            Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Resource: arn:aws:logs:*:*:*
-      Roles:
-        -
-          !Ref LAMBDAROLE
-Outputs:
-  LambdaArn:
-    Description: ARN of the Lambda Function, which syncs up configuration files with yaml file
-    Value: !GetAtt LAMBDA.Arn
-    Export:
-      Name: service-catalog-sync-lambda
+          Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: VPCFlowLogS3EnforcementLambdaPolicy2
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                  - 'logs:DescribeLogStreams'
+                  - 'logs:DescribeLogGroups'
+                  - 'logs:CreateLogDelivery'
+                  - 'logs:DeleteLogDelivery'
+                  - 'ec2:CreateFlowLogs'
+                  - 'ec2:DescribeFlowLogs'
+                  - 'config:PutEvaluations'
+                  - 'config:StartConfigRulesEvaluation'
+                Resource:
+                  - '*'
+        - PolicyName: OrgConfigRuleAssumeEvalsRole2Policy2
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "sts:AssumeRole"
+                Resource: "arn:aws:iam::*:role/OrgConfigRuleEvalsRole2"
+        - PolicyName: VPCFlowLogS3EnforcementAssumeLambdaRole2Policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "sts:AssumeRole"
+                Resource: "arn:aws:iam::*:role/VPCFlowLogS3EnforcementLambdaRole2"
+  rConfigPermissionToCallLambda:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+      - rVPCFlowLogS3EnforcementLambda2
+    Properties:
+      FunctionName: !GetAtt rVPCFlowLogS3EnforcementLambda2.Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "config.amazonaws.com"

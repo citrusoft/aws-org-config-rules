@@ -1,0 +1,147 @@
+---
+#
+# Filename    : org-managed-config-rules.yaml
+# Date        : 6 Dec 2019
+# Author      : Tommy Hunt (tahv@pge.com)
+# Description : AWS managed Organization Config Rules for all accounts.
+#
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Managed Organization AWS:Config Rules
+Parameters:
+  ComplianceAccount:
+    Description: AWS AccountNumber of the centralized-lambda to be invoked.
+    Type: Number
+    Default: 567207295412
+  pLambdaExecutionRoleARN:
+    Type: String
+    Description: ARN of Role allowing lambda to determine compliance
+    Default: 'arn:aws:iam::*:role/VPCFlowLogS3EnforcementLambdaRole2'
+  pOrgConfigRuleEvalsRoleARN:
+    Type: String
+    Description: ARN of Role allowing PutEvaluations to account's OrganizationConfigRules
+    Default: 'arn:aws:iam::*:role/OrgConfigRuleEvalsRole'
+Mappings:
+  AcctType:
+    nonprod:
+      XAccounts:
+        - "919568423267" #Master
+        # - "782391863272" #Tools
+        # - "123133550781" #Dev
+        # - "567207295412" #Test
+        # - "930856341568" #Production
+
+Resources:
+  rConfigRuleForCloudTrail:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-is-cloudtrail-enabled
+      OrganizationManagedRuleMetadata: 
+        Description: Is Cloudtrail enabled for this account?
+        RuleIdentifier: CLOUD_TRAIL_ENABLED
+  rConfigRuleForSSH:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-ec2-sg-unrestricted-ssh-access
+      OrganizationManagedRuleMetadata: 
+        Description: Do EC2 security groups restrict inbound ssh access?
+        ResourceTypesScope:
+          - AWS::EC2::SecurityGroup
+        RuleIdentifier: INCOMING_SSH_DISABLED
+  rConfigRuleForRequiredTags:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: ec2-required-tags
+      OrganizationManagedRuleMetadata: 
+        Description: Do EC2 instances and volumes comply with required tags?
+        InputParameters: '{"tag1Key": "Name", "tag2Key": "AppID"}'
+        ResourceTypesScope:
+          - AWS::EC2::Volume
+          - AWS::EC2::Instance
+        RuleIdentifier: REQUIRED_TAGS
+  rConfigRuleForUnrestrictedPorts:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-ec2-sg-unrestricted-ports
+      OrganizationManagedRuleMetadata: 
+        Description: Do security groups restrict inbound TCP traffic ?
+        InputParameters: '{"blockedPort1": "3389", "blockedPort2": "22"}'
+        ResourceTypesScope:
+          - AWS::EC2::SecurityGroup
+        RuleIdentifier: RESTRICTED_INCOMING_TRAFFIC
+  rConfigRuleForRdsPublic:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-rds-public-access
+      OrganizationManagedRuleMetadata: 
+        Description: Are RDS instances publicly accessible?
+        ResourceTypesScope:
+          - AWS::RDS::DBInstance
+        RuleIdentifier: RDS_INSTANCE_PUBLIC_ACCESS_CHECK
+  rConfigRuleForRdsEncryption:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-rds-encryption
+      OrganizationManagedRuleMetadata: 
+        Description: Are RDS instances encrypted?
+        ResourceTypesScope:
+          - AWS::RDS::DBInstance
+        RuleIdentifier: RDS_STORAGE_ENCRYPTED
+  rConfigRuleForRdsBackup:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-rds-backup
+      OrganizationManagedRuleMetadata: 
+        Description: Are RDS instances being backed-up?
+        ResourceTypesScope:
+          - AWS::RDS::DBInstance
+        RuleIdentifier: DB_INSTANCE_BACKUP_ENABLED
+  rConfigRuleForEncryptedBuckets:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: s3-bucket-server-side-encryption-enabled
+      OrganizationManagedRuleMetadata: 
+        Description: Does S3 bucket have either S3 default encryption enabled or an S3 bucket policy explicitly denies put-object requests without server side encryption?
+        ResourceTypesScope:
+          - AWS::S3::Bucket
+        RuleIdentifier: S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED
+  rConfigRuleForEncryptedVolumes:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: encrypted-volumes
+      OrganizationManagedRuleMetadata: 
+        Description: Are EBS volumes that are in an attached state encrypted?
+        ResourceTypesScope:
+          - AWS::EC2::Volume
+        RuleIdentifier: ENCRYPTED_VOLUMES 
+  # rConfigVPCFlowLogRule:
+  #   Type: AWS::Config::OrganizationConfigRule
+  #   Properties:
+  #     ExcludedAccounts:
+  #       !FindInMap [AcctType, nonprod, XAccounts]
+  #     OrganizationConfigRuleName: VPCFlowLogS3Rule2
+  #     OrganizationCustomRuleMetadata:
+  #       Description: Are VPCFlowLogs logging to S3?
+  #       InputParameters: !Sub '{"executionRole":"${pLambdaExecutionRoleARN}","evaluationRole":"${pOrgConfigRuleEvalsRoleARN}"}'
+  #       LambdaFunctionArn: !Sub arn:aws:lambda:us-east-2:${ComplianceAccount}:function:VPCFlowLogS3EnforcementLambda2
+  #       OrganizationConfigRuleTriggerTypes: 
+  #         - 'ConfigurationItemChangeNotification'
+  #       ResourceTypesScope:
+  #         - AWS::EC2::VPC
