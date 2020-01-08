@@ -7,6 +7,11 @@
 #
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Managed Organization AWS:Config Rules
+Parameters:
+  ComplianceAccount:
+    Description: AWS AccountNumber of the centralized-lambda to be invoked.
+    Type: Number
+    Default: 567207295412
 Mappings:
   AcctType:
     nonprod:
@@ -126,7 +131,8 @@ Resources:
       OrganizationConfigRuleName: VPCFlowLogS3Rule2
       OrganizationCustomRuleMetadata:
         Description: Are VPCFlowLogs logging to S3?
-        LambdaFunctionArn: !Sub arn:aws:lambda:us-west-2:${TargetAccount}:function:VPCFlowLogS3EnforcementLambda2        OrganizationConfigRuleTriggerTypes: 
+        LambdaFunctionArn: !Sub arn:aws:lambda:us-west-2:${ComplianceAccount}:function:VPCFlowLogS3EnforcementLambda2
+        OrganizationConfigRuleTriggerTypes: 
           - 'ConfigurationItemChangeNotification'
         ResourceTypesScope:
           - AWS::EC2::VPC
