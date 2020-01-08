@@ -1,10 +1,7 @@
-﻿# Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: MIT-0
-
-AWSTemplateFormatVersion: '2010-09-09'
+﻿AWSTemplateFormatVersion: '2010-09-09'
 Description: service-catalog-sync-lambda
 Resources:
-  LAMBDA:
+  LAMBDA_SYNC:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: service-catalog-sync-lambda
@@ -14,6 +11,17 @@ Resources:
       Code: ./
       MemorySize: 128
       Timeout: 300
+      Role: !GetAtt LAMBDAROLE.Arn
+  LAMBDA_VPC:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: VPCFlowLogS3EnforcementLambda2
+      Handler: VPCFlowLogS3EnforcementLambda.lambda_handler
+      Runtime: python2.7
+      Description: Function to sync service catalog with a configuration file
+      Code: ./rules/VPC_FLOW_LOGS_TO_S3_CUSTOM/VPCFlowLogS3EnforcementLambda.py
+      MemorySize: 128
+      Timeout: 180
       Role: !GetAtt LAMBDAROLE.Arn
   LAMBDAROLE:
       Type: AWS::IAM::Role

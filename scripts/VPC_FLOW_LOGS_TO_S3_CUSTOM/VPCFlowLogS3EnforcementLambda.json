@@ -1,0 +1,171 @@
+{
+  "configRuleId": "config-rule-lr9as8",
+  "version": "1.0",
+  "configRuleName": "OrgConfigRule-VPCFlowLogS3Rule2-uzq6tknq",
+  "configRuleArn": "arn:aws:config:us-west-2:514712703977:config-rule/aws-service-rule/config-multiaccountsetup.amazonaws.com/config-rule-lr9as8",
+  "invokingEvent": {
+    "configurationItemDiff": null,
+    "configurationItem": {
+      "relatedEvents": [],
+      "relationships": [
+        {
+          "resourceId": "acl-03f8b26a1e2c6764a",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::NetworkAcl",
+          "name": "Contains NetworkAcl"
+        },
+        {
+          "resourceId": "acl-0fe9828fbea8ab09a",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::NetworkAcl",
+          "name": "Contains NetworkAcl"
+        },
+        {
+          "resourceId": "eni-0058f547080cea5a6",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::NetworkInterface",
+          "name": "Contains NetworkInterface"
+        },
+        {
+          "resourceId": "eni-07ddf1b4fd741e784",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::NetworkInterface",
+          "name": "Contains NetworkInterface"
+        },
+        {
+          "resourceId": "rtb-0167cf4ae3d163418",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::RouteTable",
+          "name": "Contains RouteTable"
+        },
+        {
+          "resourceId": "rtb-05a226c7e57a73128",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::RouteTable",
+          "name": "Contains RouteTable"
+        },
+        {
+          "resourceId": "sg-01df04091f6d66432",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::SecurityGroup",
+          "name": "Contains SecurityGroup"
+        },
+        {
+          "resourceId": "sg-09cd2f17d3ad16cb5",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::SecurityGroup",
+          "name": "Contains SecurityGroup"
+        },
+        {
+          "resourceId": "sg-0fabbfa23226e6a62",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::SecurityGroup",
+          "name": "Contains SecurityGroup"
+        },
+        {
+          "resourceId": "subnet-01e6eb361d99a4b7f",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::Subnet",
+          "name": "Contains Subnet"
+        },
+        {
+          "resourceId": "subnet-046aee08d92882bdc",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::Subnet",
+          "name": "Contains Subnet"
+        },
+        {
+          "resourceId": "subnet-0509503c4ae031423",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::Subnet",
+          "name": "Contains Subnet"
+        },
+        {
+          "resourceId": "subnet-0b355a4852f60bc32",
+          "resourceName": null,
+          "resourceType": "AWS::EC2::Subnet",
+          "name": "Contains Subnet"
+        }
+      ],
+      "configuration": {
+        "cidrBlock": "10.45.0.0/16",
+        "dhcpOptionsId": "dopt-ab3b18cd",
+        "state": "available",
+        "vpcId": "vpc-0917d52ba4f3a6755",
+        "ownerId": "514712703977",
+        "instanceTenancy": "default",
+        "ipv6CidrBlockAssociationSet": [],
+        "cidrBlockAssociationSet": [
+          {
+            "associationId": "vpc-cidr-assoc-0c82010c41a6e8208",
+            "cidrBlock": "10.45.0.0/16",
+            "cidrBlockState": {
+              "state": "associated",
+              "statusMessage": null
+            }
+          }
+        ],
+        "isDefault": false,
+        "tags": [
+          {
+            "key": "Environment",
+            "value": "Demo"
+          },
+          {
+            "key": "aws:cloudformation:stack-id",
+            "value": "arn:aws:cloudformation:us-west-2:514712703977:stack/PrivateVPCEndpointNetworkResources/43f43660-5181-11e9-80f8-0650fec6e554"
+          },
+          {
+            "key": "Name",
+            "value": "Demo-VPC"
+          },
+          {
+            "key": "aws:cloudformation:logical-id",
+            "value": "MyVPC"
+          },
+          {
+            "key": "aws:cloudformation:stack-name",
+            "value": "PrivateVPCEndpointNetworkResources"
+          },
+          {
+            "key": "Owner",
+            "value": "n1s3"
+          }
+        ]
+      },
+      "supplementaryConfiguration": {},
+      "tags": {
+        "aws:cloudformation:stack-name": "PrivateVPCEndpointNetworkResources",
+        "Owner": "n1s3",
+        "aws:cloudformation:stack-id": "arn:aws:cloudformation:us-west-2:514712703977:stack/PrivateVPCEndpointNetworkResources/43f43660-5181-11e9-80f8-0650fec6e554",
+        "Environment": "Demo",
+        "aws:cloudformation:logical-id": "MyVPC",
+        "Name": "Demo-VPC"
+      },
+      "configurationItemVersion": "1.3",
+      "configurationItemCaptureTime": "2019-07-24T23:32:50.591Z",
+      "configurationStateId": 1564011170591,
+      "awsAccountId": "514712703977",
+      "configurationItemStatus": "OK",
+      "resourceType": "AWS::EC2::VPC",
+      "resourceId": "vpc-0917d52ba4f3a6755",
+      "resourceName": null,
+      "ARN": "arn:aws:ec2:us-west-2:514712703977:vpc/vpc-0917d52ba4f3a6755",
+      "awsRegion": "us-west-2",
+      "availabilityZone": "Multiple Availability Zones",
+      "configurationStateMd5Hash": "",
+      "resourceCreationTime": null
+    },
+    "notificationCreationTime": "2019-12-09T18:46:24.499Z",
+    "messageType": "ConfigurationItemChangeNotification",
+    "recordVersion": "1.3"
+  },
+  "resultToken": "eyJlbmNyeXB0ZWREYXRhIjpbLTQ2LDExOCw2MCwtMTI4LDYyLDg2LDUwLDEyMSwtMzUsNDMsLTY3LC03OSwtNzIsLTEwNywtODUsNTIsMTAsLTcyLC00MiwtMjYsNzksMzMsLTU5LDgwLDU2LC0yNiw5OSwtNDAsLTEyLC0xLC03MCwxOCwxOCwxMjUsLTQxLDc2LDMyLDU2LC0yNSw4OSw1NywtMTE5LC0xMDEsLTg0LC0zMCwtMzYsOTcsLTY2LDEwOSwtMTAyLC04NywtMTQsLTg5LDgwLC04MSwtMzEsNDMsLTYwLDI2LDk2LC02Miw5MSw3NSwtNDksLTE5LDQ3LC04MSwtMzcsNTAsLTQzLC0xMDEsLTUyLDQ4LC0xMjUsLTUxLC00OSwtOTIsODgsLTEwNiwtMTA5LC0zMSwtMTYsLTk1LDQwLC05NiwtODgsMjksLTcsLTM0LDM0LDU1LDU3LC04MCw0MCwtMjMsNjUsMzMsOTYsLTc1LDMsLTUzLC00NywtOTIsNjUsLTYyLC04NSw4NywtMTExLDUsLTM5LC00MywxMDgsLTk1LC0yNyw5NCw4NiwtOTgsMTI0LC0xOSw0OCw1LC0xNywtMTA1LC0xMDMsNTAsNTMsOTMsLTkzLDEwLC04OCwtMTExLC0xMjgsLTg2LC0xOCwtMTE0LDc4LDg2LDgyLDc4LC00NywxMCwtMTE0LDEsLTgwLC00Myw1MCwtNDQsNTEsMTIsOTQsNDEsLTU2LDEwMSwxNyw2MSwzMiwtMzgsLTg5LDM2LC0xMDIsMTgsLTUsLTg4LC0xMjUsNTksNTYsMTIwLC0xMiwtOCwyMCwtMjgsLTkzLC0xMTQsMTIxLC0xMDIsMTA3LDEyNSwtMyw3NywxMTIsLTc4LDM2LC05NCwtOTksMjEsNzcsNjAsLTIwLDk1LC0xMTcsNzcsMTIsNDMsLTEyMCw5MCw3Miw2OCw4MSwyMiw0MSw2MSw4OSwtOTIsNDMsLTc3LC01NiwtNiwtNjksLTkxLC0xNCwtODgsLTM1LDYwLC02NCwtMzIsLTMxLC03OSwtOTUsNTEsMjIsLTc0LC05MCw0OSwtNjQsLTc3LDExOCw1LDc0LDExNywtMTksMTEwLDEwMiwxMDcsLTQyLC0xMjgsNCwtODIsLTk1LC0xMTEsLTc5LC0zOCwtOTksLTYwLC0xMTgsLTEwMywtODUsLTc5LDUxLDk4LDYsNjksLTE5LC01NSwtNDAsLTYyLDgwLDMxLC0xMDUsLTMxLC0xMjAsMTQsNDMsLTEyNCwxMTUsMTIwLC02OCwxMTgsLTE1LC0xMSwtNjAsNzQsLTY2LDc5LDg5LDMyLDIyLC0xMCwxMjcsLTg0LC0xMjAsLTQ1LDE5LC03NiwtMTUsLTc4LC0xMTQsLTYyLC0xMDYsLTY2LDg4LC04MSwxLC00OSwyMCwxNCwxMTIsNDUsLTg0LDg1LDMyLDMzLDYsLTExOCw0NSwtNTcsNzAsMTIsNjIsOTIsLTYzLDMwLDkyLDQ4LC0xMTMsNDcsOTAsLTEyNywtNzgsLTc3LC0zMSwtNCwtMSwtNTEsLTI4LC0xNCwyMCw4NSwtMTYsLTg1LDM0LC04Miw3MCwtNjQsMTIwLDM1LDExNCwxMDksMTksMzksNDMsLTU5LC0xMjIsLTQ4LDgzLC04MiwxMTksLTQ5LDEwNiwtMTA5LC0zMiwtNDAsODMsLTE1LC0xMDgsMTUsMTcsMTA3LDQ4LC0yOSwxMjYsLTM3LC00Nyw0NCw4MCw1MCw3MywtMzgsLTIsLTExMCwxMDQsMTI2LDg5LC0zMSwtNTMsLTQ3LDI2LC0xMjcsLTEyNCwxMDIsMTA2LC05OSwtMTA0LC00MCwxMTksNCw2NywtODcsMTAzLDE1LC00OCwzNiwtMTAsMTExLC01NSwtOCw1MywtNDIsNzIsMzksLTExNSwtODUsMzUsLTg3LDU3LDUxLDExMiwtNzYsLTM4LDI5LDE4LC0zNiwtMTE0LC00OSwtNDUsLTk2LC0zMywyMywzNiwtNSw4MCwxMjQsLTExMSwtNDIsLTEyMiwzLDc4LDk5LC04NiwtNDQsLTEwMywtNzYsNDAsMzUsODksNDcsMTEyLC0zOSwtNzcsNzgsLTgxLDE0LC05MCw0MCw4OSw2MSw0Myw3MSwzMSwyMSwxMDAsMTA4LDEyMSwtMTE1LDEyNiw0Nyw4OCwtMSw5MCw0OSwzOCwtMTIyLC03NiwxMjAsLTYzLC00NCw0NCwtNTksOTMsOTksMTgsLTEyOCwtNTIsLTk0LDEwNiw5Myw3OCwtNjksLTI1LC05MSwxMTcsLTE1LC02MywxMjQsNjIsNjUsLTM4LDI1LDQ4LDQ4LC01OSwxMTgsLTM1LC0zNSw5LDExMywtNjYsOTAsMTAyLC01NywtMTE0LC00NywxMjMsLTIsLTUsMTA4LDkyLC05LC01NywtMTI2LC04LDQ2LDg0LC05MywxMjMsLTQ0LDgyLC0xMTEsLTY4LDksLTExNiwxMywtOTMsLTExMSw4OSwxMTIsLTYwLDQ0LDQ3LDExNiwxNCwtMTIsMTE3LC0xMTAsNzEsLTU3LDEwMSwtMjQsMywxMSwzNSwxOSwtNjksODksMTA3LC03OCwtMywtMTI3LC0xMDEsNTMsLTUzLC03NSw2LC0yNSw4Nyw5NSwtMTIsLTUyLDQsLTk5LDI4LC03NCwtMTIwLDk0LDk1LC0xMDcsLTQ0LC01MiwxMTgsNjgsLTQzLDEyMiw3Miw4OSwtNjEsLTEwNiw4NiwtMTA2LC04MSwxMDksLTExMCwtOTIsLTk2LDk3LDExNSwxMjcsOTMsLTExMywtNCw2NCw2MywtMTksLTEwOCwtOSwtNzQsMTIzLDc4LDExMSwtMTE4LC03MCw4LDI5LDkzLDk5LC02MiwtMzgsMCw3LDEwNywyNCw5MCw2NiwtNiwtNjUsNzgsLTIwLDczLC00NSwtNzgsLTQ5LDY0LC0zNSw5OSwtNDFdLCJtYXRlcmlhbFNldFNlcmlhbE51bWJlciI6MSwiaXZQYXJhbWV0ZXJTcGVjIjp7Iml2IjpbLTg3LC03Niw1Miw5MiwtNTEsLTU4LC0xMjgsLTE2LDQ5LC03Myw1NSw5NSwtOCwtOTksODcsLTEwMV19fQ==",
+  "eventLeftScope": "FALSE",
+  "ruleParameters": {
+    "executionRole": "arn:aws:iam::514712703977:role/VPCFlowLogS3EnforcementLambdaRole2",
+    "evaluationRole": "arn:aws:iam::514712703977:role/OrgConfigRuleEvalsRole2"
+  },
+  "executionRoleArn": "arn:aws:iam::514712703977:role/StackSet-Enable-Config-893a20c2-6-rCfgRecorderRole-LBIOFOHCV5EK",
+  "accountId": "514712703977"
+}
