@@ -1,0 +1,114 @@
+---
+#
+# Filename    : org-custom-config-rules.yaml
+# Date        : 6 Dec 2019
+# Author      : Tommy Hunt (tahv@pge.com)
+# Description : AWS custom Organization Config Rules for all accounts.
+#
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Custom Organization AWS:Config Rules
+Parameters:
+  TargetAccount:
+    Description: AWS AccountNumber of the centralized-lambda to be invoked.
+    Type: Number
+    Default: 158467620404
+Mappings:
+  AcctType:
+    nonprod:
+      XAccounts:
+        - "582638330053"
+        - "457300520795"
+        - "119596063000"
+        - "965775191555"
+        - "301805926373"
+        - "990878119577"
+        - "891411827499"
+        - "072050018522"
+        - "553067951317"
+        - "912436859212"
+        - "607032743837"
+        # - "514712703977"
+        - "703666281131"
+        - "471817339124"
+        - "865440211801"
+        - "401955758888"
+        - "358627910486"
+        - "686137062481"
+        - "087432829056"
+        - "215900123988"
+        - "149262070156"
+        - "719465802387"
+        - "724187693355"
+        - "743717200918"
+        - "516084212580"
+        - "368055215549"
+        - "082574262117"
+        - "018250382163"
+        - "041353061312"
+        - "811103853713"
+        - "579357099184"
+        - "850218582334"
+        - "709142305971"
+        - "717339529996"
+        - "670341405383"
+        - "925741509387"
+        - "735941387769"
+        - "582110919147"
+        - "968608611383"
+        - "796294485691"
+        - "086565899246"
+        - "544493749271"
+        - "287440742708"
+        - "973954514056"
+        - "310650571001"
+        - "801458782278"
+        - "158467620404"
+        - "600879572074"
+        - "306449354072"
+        - "967517989313"
+        - "066699760662"
+        - "932003862618"
+        - "585924844358"
+        - "712640766496"
+        - "190530070448"
+        - "532556717184"
+        - "241689241215"
+        - "255475334417"
+        - "991535610078"
+        - "523994389869"
+        - "137059125995"
+        - "338797489773"
+        - "826136845025"
+        - "655827009573"
+        - "721158594541"
+        # - "424304752381"
+        - "676225643038"
+        - "739846873405"
+        - "595202141823"
+        - "723683702622"
+        - "594908292044"
+        - "113516829310"
+        - "829473730123"
+        - "486401697284"
+        - "850755775074"
+        - "693529014776"
+        - "641213406987"
+        - "485665243501"
+        - "654839913762"
+        - "465994993687"
+        - "412551746953"
+        - "438176192923"
+
+Resources:
+  rConfigVPCFlowLogRule:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: VPCFlowLogS3Rule2
+      OrganizationCustomRuleMetadata:
+        Description: Are VPCFlowLogs logging to S3?
+        LambdaFunctionArn: !Sub arn:aws:lambda:us-west-2:${TargetAccount}:function:VPCFlowLogS3EnforcementLambda2        OrganizationConfigRuleTriggerTypes: 
+          - 'ConfigurationItemChangeNotification'
+        ResourceTypesScope:
+          - AWS::EC2::VPC

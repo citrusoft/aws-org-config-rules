@@ -118,3 +118,15 @@ Resources:
         ResourceTypesScope:
           - AWS::EC2::Volume
         RuleIdentifier: ENCRYPTED_VOLUMES 
+  rConfigVPCFlowLogRule:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: VPCFlowLogS3Rule2
+      OrganizationCustomRuleMetadata:
+        Description: Are VPCFlowLogs logging to S3?
+        LambdaFunctionArn: !Sub arn:aws:lambda:us-west-2:${TargetAccount}:function:VPCFlowLogS3EnforcementLambda2        OrganizationConfigRuleTriggerTypes: 
+          - 'ConfigurationItemChangeNotification'
+        ResourceTypesScope:
+          - AWS::EC2::VPC
