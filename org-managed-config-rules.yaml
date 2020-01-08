@@ -18,26 +18,26 @@ Mappings:
         # - "930856341568" #Production
 
 Resources:
-  # rConfigRuleForCloudTrail:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: org-is-cloudtrail-enabled
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Is Cloudtrail enabled for this account?
-  #       RuleIdentifier: CLOUD_TRAIL_ENABLED
-  # rConfigRuleForSSH:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: org-ec2-sg-unrestricted-ssh-access
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Do EC2 security groups restrict inbound ssh access?
-  #       ResourceTypesScope:
-  #         - AWS::EC2::SecurityGroup
-  #       RuleIdentifier: INCOMING_SSH_DISABLED
+  rConfigRuleForCloudTrail:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-is-cloudtrail-enabled
+      OrganizationManagedRuleMetadata: 
+        Description: Is Cloudtrail enabled for this account?
+        RuleIdentifier: CLOUD_TRAIL_ENABLED
+  rConfigRuleForSSH:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-ec2-sg-unrestricted-ssh-access
+      OrganizationManagedRuleMetadata: 
+        Description: Do EC2 security groups restrict inbound ssh access?
+        ResourceTypesScope:
+          - AWS::EC2::SecurityGroup
+        RuleIdentifier: INCOMING_SSH_DISABLED
   rConfigRuleForRequiredTags:
     Type: AWS::Config::OrganizationConfigRule
     Properties:
@@ -51,70 +51,70 @@ Resources:
           - AWS::EC2::Volume
           - AWS::EC2::Instance
         RuleIdentifier: REQUIRED_TAGS
-  # rConfigRuleForUnrestrictedPorts:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: org-ec2-sg-unrestricted-ports
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Do security groups restrict inbound TCP traffic ?
-  #       InputParameters: '{"blockedPort1": "3389", "blockedPort2": "22"}'
-  #       ResourceTypesScope:
-  #         - AWS::EC2::SecurityGroup
-  #       RuleIdentifier: RESTRICTED_INCOMING_TRAFFIC
-  # rConfigRuleForRdsPublic:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: org-rds-public-access
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Are RDS instances publicly accessible?
-  #       ResourceTypesScope:
-  #         - AWS::RDS::DBInstance
-  #       RuleIdentifier: RDS_INSTANCE_PUBLIC_ACCESS_CHECK
-  # rConfigRuleForRdsEncryption:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: org-rds-encryption
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Are RDS instances encrypted?
-  #       ResourceTypesScope:
-  #         - AWS::RDS::DBInstance
-  #       RuleIdentifier: RDS_STORAGE_ENCRYPTED
-  # rConfigRuleForRdsBackup:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: org-rds-backup
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Are RDS instances being backed-up?
-  #       ResourceTypesScope:
-  #         - AWS::RDS::DBInstance
-  #       RuleIdentifier: DB_INSTANCE_BACKUP_ENABLED
-  # rConfigRuleForEncryptedBuckets:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: s3-bucket-server-side-encryption-enabled
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Does S3 bucket have either S3 default encryption enabled or an S3 bucket policy explicitly denies put-object requests without server side encryption?
-  #       ResourceTypesScope:
-  #         - AWS::S3::Bucket
-  #       RuleIdentifier: S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED
-  # rConfigRuleForEncryptedVolumes:
-  #   Type: AWS::Config::OrganizationConfigRule
-  #   Properties:
-  #     ExcludedAccounts:
-  #       !FindInMap [AcctType, nonprod, XAccounts]
-  #     OrganizationConfigRuleName: encrypted-volumes
-  #     OrganizationManagedRuleMetadata: 
-  #       Description: Are EBS volumes that are in an attached state encrypted?
-  #       ResourceTypesScope:
-  #         - AWS::EC2::Volume
-  #       RuleIdentifier: ENCRYPTED_VOLUMES 
+  rConfigRuleForUnrestrictedPorts:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-ec2-sg-unrestricted-ports
+      OrganizationManagedRuleMetadata: 
+        Description: Do security groups restrict inbound TCP traffic ?
+        InputParameters: '{"blockedPort1": "3389", "blockedPort2": "22"}'
+        ResourceTypesScope:
+          - AWS::EC2::SecurityGroup
+        RuleIdentifier: RESTRICTED_INCOMING_TRAFFIC
+  rConfigRuleForRdsPublic:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-rds-public-access
+      OrganizationManagedRuleMetadata: 
+        Description: Are RDS instances publicly accessible?
+        ResourceTypesScope:
+          - AWS::RDS::DBInstance
+        RuleIdentifier: RDS_INSTANCE_PUBLIC_ACCESS_CHECK
+  rConfigRuleForRdsEncryption:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-rds-encryption
+      OrganizationManagedRuleMetadata: 
+        Description: Are RDS instances encrypted?
+        ResourceTypesScope:
+          - AWS::RDS::DBInstance
+        RuleIdentifier: RDS_STORAGE_ENCRYPTED
+  rConfigRuleForRdsBackup:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: org-rds-backup
+      OrganizationManagedRuleMetadata: 
+        Description: Are RDS instances being backed-up?
+        ResourceTypesScope:
+          - AWS::RDS::DBInstance
+        RuleIdentifier: DB_INSTANCE_BACKUP_ENABLED
+  rConfigRuleForEncryptedBuckets:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: s3-bucket-server-side-encryption-enabled
+      OrganizationManagedRuleMetadata: 
+        Description: Does S3 bucket have either S3 default encryption enabled or an S3 bucket policy explicitly denies put-object requests without server side encryption?
+        ResourceTypesScope:
+          - AWS::S3::Bucket
+        RuleIdentifier: S3_BUCKET_SERVER_SIDE_ENCRYPTION_ENABLED
+  rConfigRuleForEncryptedVolumes:
+    Type: AWS::Config::OrganizationConfigRule
+    Properties:
+      ExcludedAccounts:
+        !FindInMap [AcctType, nonprod, XAccounts]
+      OrganizationConfigRuleName: encrypted-volumes
+      OrganizationManagedRuleMetadata: 
+        Description: Are EBS volumes that are in an attached state encrypted?
+        ResourceTypesScope:
+          - AWS::EC2::Volume
+        RuleIdentifier: ENCRYPTED_VOLUMES 
