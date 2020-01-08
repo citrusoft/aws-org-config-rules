@@ -1,5 +1,5 @@
 ﻿AWSTemplateFormatVersion: '2010-09-09'
-Description: service-catalog-sync-lambda
+Description: custom organization-config-rules plus service-catalog-sync-lambda
 Resources:
   SVCATSYNC:
     Type: AWS::Lambda::Function
@@ -18,7 +18,7 @@ Resources:
       FunctionName: VPCFlowLogS3EnforcementLambda2
       Handler: VPCFlowLogS3EnforcementLambda.lambda_handler
       Runtime: python2.7
-      Description: Function to sync service catalog with a configuration file
+      Description: Ensure that VPC FlowLogs to centralized S3 bucket.
       Code: ./scripts/VPC_FLOW_LOGS_TO_S3_CUSTOM/VPCFlowLogS3EnforcementLambda.py
       MemorySize: 128
       Timeout: 180
