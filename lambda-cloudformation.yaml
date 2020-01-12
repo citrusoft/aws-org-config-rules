@@ -1,17 +1,6 @@
 ﻿AWSTemplateFormatVersion: '2010-09-09'
-Description: custom organization-config-rules plus service-catalog-sync-lambda
+Description: custom organization-config-rules
 Resources:
-  SVCATSYNC:
-    Type: AWS::Lambda::Function
-    Properties:
-      FunctionName: service-catalog-sync-lambda
-      Handler: sync-catalog.handler
-      Runtime: python2.7
-      Description: Function to sync service catalog with a configuration file
-      Code: ./
-      MemorySize: 128
-      Timeout: 300
-      Role: !GetAtt LAMBDAROLE.Arn
   VPCLOG2S3:
     Type: AWS::Lambda::Function
     Properties:
@@ -67,11 +56,6 @@ Resources:
         -
           !Ref LAMBDAROLE
 Outputs:
-  LambdaArn:
-    Description: ARN of the Lambda Function, which syncs up configuration files with yaml file
-    Value: !GetAtt SVCATSYNC.Arn
-    Export:
-      Name: service-catalog-sync-lambda
   VPCLogS3LambdaArn:
     Description: ARN of the Lambda Function, enforces that VPC FlowLogs to S3 bucket.
     Value: !GetAtt VPCLOG2S3.Arn
