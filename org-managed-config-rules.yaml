@@ -15,11 +15,11 @@ Parameters:
   pLambdaExecutionRoleARN:
     Type: String
     Description: ARN of Role allowing lambda to determine compliance
-    Default: 'VPCFlowLogS3EnforcementLambdaRole2'
+    Default: 'arn:aws:iam::*:role/VPCFlowLogS3EnforcementLambdaRole2'
   pOrgConfigRuleEvalsRoleARN:
     Type: String
     Description: ARN of Role allowing PutEvaluations to account's OrganizationConfigRules
-    Default: 'OrgConfigRuleEvalsRole'
+    Default: 'arn:aws:iam::*:role/OrgConfigRuleEvalsRole'
 Mappings:
   AcctType:
     nonprod:
