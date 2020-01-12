@@ -12,14 +12,14 @@ Parameters:
     Description: AWS AccountNumber of the centralized-lambda to be invoked.
     Type: Number
     Default: 567207295412
-    pLambdaExecutionRoleARN:
-      Type: String
-      Description: ARN of Role allowing lambda to determine compliance
-      Default: 'VPCFlowLogS3EnforcementLambdaRole2'
-    pOrgConfigRuleEvalsRoleARN:
-      Type: String
-      Description: ARN of Role allowing PutEvaluations to account's OrganizationConfigRules
-      Default: 'OrgConfigRuleEvalsRole'
+  pLambdaExecutionRoleARN:
+    Type: String
+    Description: ARN of Role allowing lambda to determine compliance
+    Default: 'VPCFlowLogS3EnforcementLambdaRole2'
+  pOrgConfigRuleEvalsRoleARN:
+    Type: String
+    Description: ARN of Role allowing PutEvaluations to account's OrganizationConfigRules
+    Default: 'OrgConfigRuleEvalsRole'
 Mappings:
   AcctType:
     nonprod:
