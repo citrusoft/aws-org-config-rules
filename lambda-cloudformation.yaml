@@ -65,10 +65,6 @@ Resources:
     DependsOn:
       - rVPCFlowLogS3EnforcementLambda2
     Properties:
-      FunctionName:
-        Fn::GetAtt:
-          - rVPCFlowLogS3EnforcementLambda2
-          - Arn
+      FunctionName: !GetAtt rVPCFlowLogS3EnforcementLambda2.Arn
       Action: "lambda:InvokeFunction"
       Principal: "config.amazonaws.com"
-      SourceAccount: '514712703977'
