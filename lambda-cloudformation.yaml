@@ -8,7 +8,7 @@ Resources:
       Handler: VPCFlowLogS3EnforcementLambda.lambda_handler
       Runtime: python2.7
       Description: Ensure that VPC FlowLogs to centralized S3 bucket.
-      Code: ./scripts/VPC_FLOW_LOGS_TO_S3_CUSTOM/VPCFlowLogS3EnforcementLambda.py
+      Code: ./rules/VPC_FLOW_LOGS_TO_S3_CUSTOM/VPCFlowLogS3EnforcementLambda.py
       MemorySize: 128
       Timeout: 180
       Role: !GetAtt rVPCFlowLogS3EnforcementLambdaRole2.Arn
