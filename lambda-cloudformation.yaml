@@ -11,53 +11,79 @@ Resources:
       Code: ./scripts/VPC_FLOW_LOGS_TO_S3_CUSTOM/VPCFlowLogS3EnforcementLambda.py
       MemorySize: 128
       Timeout: 180
-      Role: !GetAtt LAMBDAROLE.Arn
-  LAMBDAROLE:
-      Type: AWS::IAM::Role
-      Properties:
-        RoleName: !Sub service-catalog-sync-lambda-role-${AWS::Region}
-        AssumeRolePolicyDocument:
-          Version: 2012-10-17
-          Statement:
-            -
-              Effect: Allow
-              Principal:
-                Service:
-                  - lambda.amazonaws.com
-              Action:
-                - sts:AssumeRole
-        Path: /
-  LAMBDAPOLICY:
-    Type: AWS::IAM::Policy
+      Role: !GetAtt rVPCFlowLogS3EnforcementLambdaRole2.Arn
+  # Use for AWS Config Enforcement of VPC Flow Log configuration checks.
+  rVPCFlowLogS3EnforcementLambdaRole2:
+    Type: 'AWS::IAM::Role'
     Properties:
-      PolicyName: !Sub service-catalog-sync-lambda-policy-${AWS::Region}
-      PolicyDocument:
-        Version: 2012-10-17
+      RoleName: VPCFlowLogS3EnforcementLambdaRole2
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
         Statement:
-          -
-            Effect: Allow
-            Action:
-              - servicecatalog:*
-              - s3:*
-              - codepipeline:PutJobFailureResult
-              - codepipeline:PutJobSuccessResult
-              - cloudformation:ValidateTemplate
-              - iam:GetRole
-            Resource:
-              - "*"
-          -
-            Effect: Allow
-            Action:
-              - logs:CreateLogGroup
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-            Resource: arn:aws:logs:*:*:*
-      Roles:
-        -
-          !Ref LAMBDAROLE
-Outputs:
-  VPCLogS3LambdaArn:
-    Description: ARN of the Lambda Function, enforces that VPC FlowLogs to S3 bucket.
-    Value: !GetAtt VPCLOG2S3.Arn
-    Export:
-      Name: vpc-flowlog-s3-lambda
+          Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action: 'sts:AssumeRole'
+      Policies:
+        - PolicyName: VPCFlowLogS3EnforcementLambdaPolicy2
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                  - 'logs:DescribeLogStreams'
+                  - 'logs:DescribeLogGroups'
+                  - 'logs:CreateLogDelivery'
+                  - 'logs:DeleteLogDelivery'
+                  - 'ec2:CreateFlowLogs'
+                  - 'ec2:DescribeFlowLogs'
+                  - 'config:PutEvaluations'
+                  - 'config:StartConfigRulesEvaluation'
+                Resource:
+                  - '*'
+        - PolicyName: OrgConfigRuleAssumeEvalsRole2Policy2
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "sts:AssumeRole"
+                Resource: "arn:aws:iam::*:role/OrgConfigRuleEvalsRole2"
+        - PolicyName: VPCFlowLogS3EnforcementAssumeLambdaRole2Policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "sts:AssumeRole"
+                Resource: "arn:aws:iam::*:role/VPCFlowLogS3EnforcementLambdaRole2"
+  rVPCFlowLogS3EnforcementLambda2:
+    Type: 'AWS::Lambda::Function'
+    DependsOn:
+      - rVPCFlowLogS3EnforcementLambdaRole2
+    Properties:
+      Handler: 'VPCFlowLogS3EnforcementLambda.lambda_handler'
+      FunctionName: VPCFlowLogS3EnforcementLambda2
+      Role: # !Sub 'arn:aws:iam::${AWS::AccountId}:role/VPCFlowLogS3EnforcementLambdaRole2'
+        Fn::GetAtt:
+          - rVPCFlowLogS3EnforcementLambdaRole2
+          - Arn
+      Code:
+        S3Bucket: 'pge-nonprod-lambda'
+        S3Key: 'tahv/CLOUDCOE-4008/VPCFlowLogS3EnforcementLambda.py.zip'
+      Runtime: 'python2.7'
+      Timeout: '25'
+  rConfigPermissionToCallLambda:
+    Type: "AWS::Lambda::Permission"
+    DependsOn:
+      - rVPCFlowLogS3EnforcementLambda2
+    Properties:
+      FunctionName:
+        Fn::GetAtt:
+          - rVPCFlowLogS3EnforcementLambda2
+          - Arn
+      Action: "lambda:InvokeFunction"
+      Principal: "config.amazonaws.com"
+      SourceAccount: '514712703977'
