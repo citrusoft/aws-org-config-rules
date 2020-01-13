@@ -1,8 +1,10 @@
 ﻿AWSTemplateFormatVersion: '2010-09-09'
 Description: custom organization-config-rules
 Resources:
-  VPCLOG2S3:
+  rVPCFlowLogS3EnforcementLambda2:
     Type: AWS::Lambda::Function
+    DependsOn:
+      - rVPCFlowLogS3EnforcementLambdaRole2
     Properties:
       FunctionName: VPCFlowLogS3EnforcementLambda2
       Handler: VPCFlowLogS3EnforcementLambda.lambda_handler
@@ -12,7 +14,6 @@ Resources:
       MemorySize: 128
       Timeout: 180
       Role: !GetAtt rVPCFlowLogS3EnforcementLambdaRole2.Arn
-  # Use for AWS Config Enforcement of VPC Flow Log configuration checks.
   rVPCFlowLogS3EnforcementLambdaRole2:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -59,22 +60,6 @@ Resources:
               - Effect: Allow
                 Action: "sts:AssumeRole"
                 Resource: "arn:aws:iam::*:role/VPCFlowLogS3EnforcementLambdaRole2"
-  rVPCFlowLogS3EnforcementLambda2:
-    Type: 'AWS::Lambda::Function'
-    DependsOn:
-      - rVPCFlowLogS3EnforcementLambdaRole2
-    Properties:
-      Handler: 'VPCFlowLogS3EnforcementLambda.lambda_handler'
-      FunctionName: VPCFlowLogS3EnforcementLambda2
-      Role: # !Sub 'arn:aws:iam::${AWS::AccountId}:role/VPCFlowLogS3EnforcementLambdaRole2'
-        Fn::GetAtt:
-          - rVPCFlowLogS3EnforcementLambdaRole2
-          - Arn
-      Code:
-        S3Bucket: 'pge-nonprod-lambda'
-        S3Key: 'tahv/CLOUDCOE-4008/VPCFlowLogS3EnforcementLambda.py.zip'
-      Runtime: 'python2.7'
-      Timeout: '25'
   rConfigPermissionToCallLambda:
     Type: "AWS::Lambda::Permission"
     DependsOn:
