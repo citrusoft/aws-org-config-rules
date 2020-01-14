@@ -26,7 +26,6 @@ Resources:
             Service:
               - lambda.amazonaws.com
           Action: 'sts:AssumeRole'
-          Resource: '*'
       Policies:
         - PolicyName: VPCFlowLogS3EnforcementLambdaPolicy2
           PolicyDocument:
